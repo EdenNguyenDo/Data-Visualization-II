@@ -1,0 +1,21 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+      "url": "../data/forest_by_cat.csv",
+      "format": {
+        "type": "csv"
+      }
+    },
+    "mark": "bar",
+    "encoding": {
+      "x": {"field": "Jurisdiction", "type": "nominal", "axis": {"labelAngle": -45}},
+      "y": {"field": "Total Area Burnt", "type": "quantitative"},
+      "color": {"field": "Forest Category", "type": "nominal"},
+      "tooltip": [
+        {"field": "Jurisdiction", "type": "nominal"},
+        {"field": "Forest Category", "type": "nominal"},
+        {"field": "Total Area Burnt", "type": "quantitative"}
+      ]
+    }
+  }
+  
