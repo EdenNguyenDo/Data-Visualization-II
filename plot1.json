@@ -1,7 +1,5 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "width": 900,
-    "height": 400,
     "data": {
       "url": "data/forest_by_cat.csv",
       "format": {
