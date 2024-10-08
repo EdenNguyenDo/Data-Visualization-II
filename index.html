@@ -8,12 +8,20 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
   <style>
     body {
-      background-color: lightcyan; /* Setting background color to light cyan */
-      font-family: Arial, sans-serif; /* Adding a clean, simple font */
-      padding: 20px;
+      background-color: lightcyan;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center; /* Centers text content */
     }
 
     #map1, #plot1 {
+      width: 80%; /* Adjust width for responsiveness */
       margin-bottom: 20px;
     }
 
@@ -21,6 +29,7 @@
       margin-top: 10px;
       color: #333;
       line-height: 1.6;
+      max-width: 80%; /* Limits the text width for readability */
     }
   </style>
 </head>
