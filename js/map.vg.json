@@ -1,0 +1,102 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 1000,
+  "height": 500,
+  "title": "AUSTRALIA BUSHFIRE FROM SATELLITE (October 2019 - January 2019) - MODIS",
+  "projection": {"type": "mercator"},
+  "data": {
+    "url": "https://raw.githubusercontent.com/dngu0107/Data-Visualization-II/refs/heads/main/data/fire_nrt_M6_96619.csv",
+    "name": "fire_data"
+  },
+  "params": [
+    {
+      "name": "Month_selection",
+      "bind": {
+        "input": "select",
+        "options": [null, "10", "11", "12", "1"],
+        "labels": [
+          "Show All",
+          "October 2019",
+          "November 2019",
+          "December 2019",
+          "January 2019"
+        ],
+        "name": "Month Selection: "
+      }
+    },
+    {
+      "name": "frp_range",
+      "value": 1000,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 1000,
+        "step": 5,
+        "name": "FRP Range: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "calculate": "parseInt(split(datum.acq_date, '/')[0])",
+      "as": "month"
+    },
+    {
+      "filter": "Month_selection == null || datum.month == Month_selection"
+    },
+    {
+      "filter": "datum.frp <= frp_range" 
+}
+    ],
+  "layer": [
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/alwaysblazing/Australia-State-TopoJson-MapChart/refs/heads/master/au-states-topo.json",
+        "format": {"type": "topojson", "feature": "austates"}
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#f6db97",
+        "stroke": "darkgray"
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/dngu0107/Homework_W9/refs/heads/main/australia_graticules.json",
+        "format": {"type": "topojson", "feature": "ne_110m_graticules_15"}
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "black",
+        "stroke": "black"
+      }
+    },
+    {
+      "mark": {"type": "circle", "tooltip": {"content": "data"}},
+      "encoding": {
+        "longitude": {"field": "longitude", "type": "quantitative"},
+        "latitude": {"field": "latitude", "type": "quantitative"},
+        "size": {
+          "field": "frp",
+          "type": "quantitative",
+          "title": "Radioactive energy level (MW)",
+          "scale": {"domain": [0, 1000]}
+        },
+        "color": {
+          "field": "brightness",
+          "type": "quantitative",
+          "title": "Brightness temperature (K)",
+          "scale": {"scheme": "reds"}
+        },
+        "tooltip": [
+          {"field": "longitude", "title": "Longitude: "},
+          {"field": "latitude", "title": "Latitude: "},
+          {"field": "brightness", "title": "Brightness Temperature (K): "},
+          {"field": "frp", "title": "Fire radioactive power (MW): "},
+          {"field": "confidence", "title": "Confidence level: "}
+        ]
+      }
+    }
+  ],
+  "config": {"background": "lightblue"}
+}

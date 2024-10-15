@@ -1,0 +1,340 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v5.2.json",
+    "height": 300,
+    "width": 600,
+    "data": [
+      {
+        "name": "rawData",
+        "values": [
+        {"key": {"states": "ACT", "forest_tenure": "Leasehold"}, "fire_area": 3},
+        {"key": {"states": "NSW", "forest_tenure": "Leasehold"}, "fire_area": 19},
+        {"key": {"states": "QLD", "forest_tenure": "Leasehold"}, "fire_area": 18},
+        {"key": {"states": "SA", "forest_tenure": "Leasehold"}, "fire_area": 22},
+        {"key": {"states": "WA", "forest_tenure": "Leasehold"}, "fire_area": 50},
+        {"key": {"states": "NSW", "forest_tenure": "Multiple-use public forest"}, "fire_area": 880},
+        {"key": {"states": "QLD", "forest_tenure": "Multiple-use public forest"}, "fire_area": 162},
+        {"key": {"states": "TAS", "forest_tenure": "Multiple-use public forest"}, "fire_area": 10},
+        {"key": {"states": "VIC", "forest_tenure": "Multiple-use public forest"}, "fire_area": 878},
+        {"key": {"states": "WA", "forest_tenure": "Multiple-use public forest"}, "fire_area": 31},
+        {"key": {"states": "ACT", "forest_tenure": "Nature conservation reserve"}, "fire_area": 80},
+        {"key": {"states": "NSW", "forest_tenure": "Nature conservation reserve"}, "fire_area": 2750},
+        {"key": {"states": "QLD", "forest_tenure": "Nature conservation reserve"}, "fire_area": 169},
+        {"key": {"states": "SA", "forest_tenure": "Nature conservation reserve"}, "fire_area": 62},
+        {"key": {"states": "TAS", "forest_tenure": "Nature conservation reserve"}, "fire_area": 3},
+        {"key": {"states": "VIC", "forest_tenure": "Nature conservation reserve"}, "fire_area": 496},
+        {"key": {"states": "WA", "forest_tenure": "Nature conservation reserve"}, "fire_area": 286},
+        {"key": {"states": "NSW", "forest_tenure": "Other Crown land"}, "fire_area": 109},
+        {"key": {"states": "QLD", "forest_tenure": "Other Crown land"}, "fire_area": 48},
+        {"key": {"states": "TAS", "forest_tenure": "Other Crown land"}, "fire_area": 6},
+        {"key": {"states": "VIC", "forest_tenure": "Other Crown land"}, "fire_area": 13},
+        {"key": {"states": "WA", "forest_tenure": "Other Crown land"}, "fire_area": 749},
+        {"key": {"states": "NSW", "forest_tenure": "Private forest"}, "fire_area": 1254},
+        {"key": {"states": "QLD", "forest_tenure": "Private forest"}, "fire_area": 110},
+        {"key": {"states": "SA", "forest_tenure": "Private forest"}, "fire_area": 33},
+        {"key": {"states": "TAS", "forest_tenure": "Private forest"}, "fire_area": 7},
+        {"key": {"states": "VIC", "forest_tenure": "Private forest"}, "fire_area": 57},
+        {"key": {"states": "WA", "forest_tenure": "Private forest"}, "fire_area": 22}
+      ],
+        "transform": [
+          {"type": "formula", "expr": "datum.key.states", "as": "states"},
+          {"type": "formula", "expr": "datum.key.forest_tenure", "as": "forest_tenure"},
+          {"type": "formula", "expr": "datum.fire_area", "as": "size"}
+        ]
+      },
+      {
+        "name": "nodes",
+        "source": "rawData",
+        "transform": [
+          {
+            "type": "filter",
+            "expr": "!groupSelector || groupSelector.states == datum.states || groupSelector.forest_tenure == datum.forest_tenure"
+          },
+          {"type": "formula", "expr": "datum.states+datum.forest_tenure", "as": "key"},
+          {"type": "fold", "fields": ["states", "forest_tenure"], "as": ["stack", "grpId"]},
+          {
+            "type": "formula",
+            "expr": "datum.stack == 'states' ? datum.states+' '+datum.forest_tenure : datum.forest_tenure+' '+datum.states",
+            "as": "sortField"
+          },
+          {
+            "type": "stack",
+            "groupby": ["stack"],
+            "sort": {"field": "sortField", "order": "descending"},
+            "field": "size"
+          },
+          {"type": "formula", "expr": "(datum.y0+datum.y1)/2", "as": "yc"}
+        ]
+      },
+      {
+        "name": "groups",
+        "source": "nodes",
+        "transform": [
+          {
+            "type": "aggregate",
+            "groupby": ["stack", "grpId"],
+            "fields": ["size"],
+            "ops": ["sum"],
+            "as": ["total"]
+          },
+          {
+            "type": "stack",
+            "groupby": ["stack"],
+            "sort": {"field": "grpId", "order": "descending"},
+            "field": "total"
+          },
+          {"type": "formula", "expr": "scale('y', datum.y0)", "as": "scaledY0"},
+          {"type": "formula", "expr": "scale('y', datum.y1)", "as": "scaledY1"},
+          {
+            "type": "formula",
+            "expr": "datum.stack == 'states'",
+            "as": "rightLabel"
+          },
+          {
+            "type": "formula",
+            "expr": "datum.total/domain('y')[1]",
+            "as": "percentage"
+          }
+        ]
+      },
+      {
+        "name": "destinationNodes",
+        "source": "nodes",
+        "transform": [{"type": "filter", "expr": "datum.stack == 'forest_tenure'"}]
+      },
+      {
+        "name": "edges",
+        "source": "nodes",
+        "transform": [
+          {"type": "filter", "expr": "datum.stack == 'states'"},
+          {
+            "type": "lookup",
+            "from": "destinationNodes",
+            "key": "key",
+            "fields": ["key"],
+            "as": ["target"]
+          },
+          {
+            "type": "linkpath",
+            "orient": "horizontal",
+            "shape": "diagonal",
+            "sourceY": {"expr": "scale('y', datum.yc)"},
+            "sourceX": {"expr": "scale('x', 'states') + bandwidth('x')"},
+            "targetY": {"expr": "scale('y', datum.target.yc)"},
+            "targetX": {"expr": "scale('x', 'forest_tenure')"}
+          },
+          {
+            "type": "formula",
+            "expr": "range('y')[0]-scale('y', datum.size)",
+            "as": "strokeWidth"
+          },
+          {
+            "type": "formula",
+            "expr": "datum.size/domain('y')[1]",
+            "as": "percentage"
+          }
+        ]
+      }
+    ],
+    "scales": [
+      {
+        "name": "x",
+        "type": "band",
+        "range": "width",
+        "domain": ["states", "forest_tenure"],
+        "paddingOuter": 0.05,
+        "paddingInner": 0.95
+      },
+      {
+        "name": "y",
+        "type": "linear",
+        "range": "height",
+        "domain": {"data": "nodes", "field": "y1"}
+      },
+      {
+        "name": "color",
+        "type": "ordinal",
+        "range": "category",
+        "domain": {"data": "nodes", "field": "grpId"}
+      },
+      {
+        "name": "stackNames",
+        "type": "ordinal",
+        "range": ["Source", "Destination"],
+        "domain": ["states", "forest_tenure"]
+      }
+    ],
+
+    "marks": [
+      {
+        "type": "path",
+        "name": "edgeMark",
+        "from": {"data": "edges"},
+        "clip": true,
+        "encode": {
+          "update": {
+            "stroke": [
+              {
+                "test": "groupSelector && groupSelector.stack=='states'",
+                "scale": "color",
+                "field": "forest_tenure"
+              },
+              {"scale": "color", "field": "states"}
+            ],
+            "strokeWidth": {"field": "strokeWidth"},
+            "path": {"field": "path"},
+            "strokeOpacity": {
+              "signal": "!groupSelector && (groupHover.states == datum.states || groupHover.forest_tenure == datum.forest_tenure) ? 0.9 : 0.3"
+            },
+            "zindex": {
+              "signal": "!groupSelector && (groupHover.states == datum.states || groupHover.forest_tenure == datum.forest_tenure) ? 1 : 0"
+            },
+            "tooltip": {
+              "signal": "datum.states + ' → ' + datum.forest_tenure + '    ' + format(datum.size, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"
+            }
+          },
+          "hover": {"strokeOpacity": {"value": 1}}
+        }
+      },
+      {
+        "type": "rect",
+        "name": "groupMark",
+        "from": {"data": "groups"},
+        "encode": {
+          "enter": {
+            "fill": {"scale": "color", "field": "grpId"},
+            "width": {"scale": "x", "band": 1}
+          },
+          "update": {
+            "x": {"scale": "x", "field": "stack"},
+            "y": {"field": "scaledY0"},
+            "y2": {"field": "scaledY1"},
+            "fillOpacity": {"value": 0.6},
+            "tooltip": {
+              "signal": "datum.grpId + '   ' + format(datum.total, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"
+            }
+          },
+          "hover": {"fillOpacity": {"value": 1}}
+        }
+      },
+      {
+        "type": "text",
+        "from": {"data": "groups"},
+        "interactive": false,
+        "encode": {
+          "update": {
+            "x": {
+              "signal": "scale('x', datum.stack) + (datum.rightLabel ? bandwidth('x') + 8 : -8)"
+            },
+            "yc": {"signal": "(datum.scaledY0 + datum.scaledY1)/2"},
+            "align": {"signal": "datum.rightLabel ? 'left' : 'right'"},
+            "baseline": {"value": "middle"},
+            "fontWeight": {"value": "bold"},
+            "text": {
+              "signal": "abs(datum.scaledY0-datum.scaledY1) > 13 ? datum.grpId : ''"
+            }
+          }
+        }
+      },
+      {
+        "type": "group",
+        "data": [
+          {
+            "name": "dataForShowAll",
+            "values": [{}],
+            "transform": [{"type": "filter", "expr": "groupSelector"}]
+          }
+        ],
+        "encode": {
+          "enter": {
+            "xc": {"signal": "width/2"},
+            "y": {"value": 30},
+            "width": {"value": 80},
+            "height": {"value": 30}
+          }
+        },
+        "marks": [
+          {
+            "type": "group",
+            "name": "groupReset",
+            "from": {"data": "dataForShowAll"},
+            "encode": {
+              "enter": {
+                "cornerRadius": {"value": 6},
+                "fill": {"value": "#f5f5f5"},
+                "stroke": {"value": "#c1c1c1"},
+                "strokeWidth": {"value": 2},
+                "height": {"field": {"group": "height"}},
+                "width": {"field": {"group": "width"}}
+              },
+              "update": {"opacity": {"value": 1}},
+              "hover": {"opacity": {"value": 0.7}}
+            },
+            "marks": [
+              {
+                "type": "text",
+                "interactive": false,
+                "encode": {
+                  "enter": {
+                    "xc": {"field": {"group": "width"}, "mult": 0.5},
+                    "yc": {
+                      "field": {"group": "height"},
+                      "mult": 0.5,
+                      "offset": 2
+                    },
+                    "align": {"value": "center"},
+                    "baseline": {"value": "middle"},
+                    "fontWeight": {"value": "bold"},
+                    "text": {"value": "Show All"}
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "rect",
+        "from": {"data": "nodes"},
+        "encode": {
+          "enter": {
+            "stroke": {"value": "#000"},
+            "strokeWidth": {"value": 2},
+            "width": {"scale": "x", "band": 1},
+            "x": {"scale": "x", "field": "stack"},
+            "y": {"field": "y0", "scale": "y"},
+            "y2": {"field": "y1", "scale": "y"}
+          }
+        }
+      }
+    ],
+    "signals": [
+      {
+        "name": "groupHover",
+        "value": {},
+        "on": [
+          {
+            "events": "@groupMark:mouseover",
+            "update": "{states:datum.stack=='states' && datum.grpId, forest_tenure:datum.stack=='forest_tenure' && datum.grpId}"
+          },
+          {"events": "mouseout", "update": "{}"}
+        ]
+      },
+      {
+        "name": "groupSelector",
+        "value": false,
+        "on": [
+          {
+            "events": "@groupMark:click!",
+            "update": "{stack:datum.stack, states:datum.stack=='states' && datum.grpId, forest_tenure:datum.stack=='forest_tenure' && datum.grpId}"
+          },
+          {
+            "events": [
+              {"type": "click", "markname": "groupReset"},
+              {"type": "dblclick"}
+            ],
+            "update": "false"
+          }
+        ]
+      }
+    ]
+}
