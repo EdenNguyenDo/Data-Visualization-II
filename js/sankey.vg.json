@@ -141,8 +141,8 @@
         "type": "band",
         "range": "width",
         "domain": ["states", "forest_tenure"],
-        "paddingOuter": 0.05,
-        "paddingInner": 0.95
+        "paddingOuter": 0.02,
+        "paddingInner": 0.9
       },
       {
         "name": "y",
