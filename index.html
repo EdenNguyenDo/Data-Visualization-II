@@ -24,7 +24,7 @@
 
     /* Header Box Styles */
     .header-box {
-      background-color: #f5f3f3;
+      background-color: #ffcba0;
       border: 2px solid black;
       padding: 15px;
       text-align: center;
@@ -54,7 +54,7 @@
     /* Placeholder text styles */
     .placeholder-text {
       margin-top: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 40px;
       color: #333;
       line-height: 1.6;
     }
@@ -81,6 +81,7 @@
       margin-top: 20px;
       color: #666;
     }
+
   </style>
 </head>
 <body>
@@ -96,12 +97,20 @@
       <p>aims to provide a deeper insight into the catastrophe.</p>
     </div>
 
+
+
+
     <!-- Plot 1 (Lollipop) -->
     <div id="plot1"></div>
 
+
     <!-- Paragraph about Plot 1 -->
     <div class="placeholder-text">
-      <p>This plot highlights the variation in forest types across jurisdictions. It helps us to see the distribution of different forest types and understand the spread more effectively. This visualization informs us about the impact of different forest categories on the environment and policy decisions.</p>
+      <p>+ This plot highlights the variation in forest types across 12 years from 2012.</p>
+      <p>+ Bushfire has always been a common disaster in Australia with the burnt area always been over 30000 hectares a year not including 2024.</p>
+      <p>+ Especially in 2019, the burnt area surged above 60000 hectares, a terrible event that happened for over 4 months.</p>
+      <p>+ The bushfire in 2019 - Black Summer and is going to be looked into more deeply in this visualisation.</p>
+
     </div>
 
     <!-- Map Visualization -->
@@ -109,20 +118,30 @@
 
     <!-- Paragraph about Map -->
     <div class="placeholder-text">
-      <p>This map showcases the distribution of forest areas across different jurisdictions in Australia. The forest categories include native forest, commercial plantations, and other types of forests. Each category is represented with corresponding data for easier comparison and understanding.</p>
+      <p>This map shows the area of Australia that was affected during the Black Summer disaster. 
+          It shows the Area that was detected to be burnt by the cirle (size represent energy detected in the fire) while the redness of the circle represent the heat that was detected by a NASA satellite.
+        As can be observed, a large area of Australia was heavily damaged except for Tasmania, ACT, South Australia and Victoria which has slightly less area burnt.
+        December 2019 was the worst month as the number of fires detected together with the area burnt was the biggest if we filter by the month. Overall, it had been a horrible exprerience affected numerous of citizens and dozens of people was killed. </p>
     </div>
 
     <!-- Two-column layout: Paragraph on the left, Sankey on the right -->
     <div class="sankey-paragraph-container">
       <div class="sankey-description">
-        <p>This Sankey diagram shows the flow of forest resources and their distribution between different regions. The visualisation gives a clear picture of how forests are divided among jurisdictions and provides insights into the sustainability of forest management across Australia.</p>
+        <p>  <p>
+        <p> The visualisation gives a clear picture of the area of forest fire divided among forest tenure for each state  <p>
+        <p> + New South Whales is the state that has most amount of damaged in terms of burnt area<p>
+        <p> + Natural conservation reserve is the type of forest tenure that has most area burnt. <p>
+        <p> + Leasehold forest tenure is has the smallest burnt area compared to other type. <p>
+        <p> + Northern Territory does not have any data in the dataset as the data mainly focus con Southern and Western area. <p>
+        <p> + Tasmania and ACT total burnt area is insignificant compared to Queensland or NSW which is why we cannot see the sector inside the column<p>
+
       </div>
       <div id="plot2"></div>
     </div>
 
     <!-- Meta data -->
     <div class="meta-data">
-      <p>Data Source: Australian Forestry Department & NASA | Visualisation by Do Thanh Binh Nguyen - Monash University | Last Updated: October 2024</p>
+      <p>Data Source: Australian Forestry Department | Visualisation by Do Thanh Binh Nguyen - Monash University | Last Updated: October 2024</p>
     </div>
 
   </div> <!-- End of wrapper -->
