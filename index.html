@@ -8,50 +8,136 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
   <style>
     body {
-      background-color: lightcyan; /* Setting background color to light cyan */
-      font-family: Arial, sans-serif; /* Adding a clean, simple font */
-      padding: 20px;
+      background-color: lightgoldenrodyellow;
+      font-family: Arial, sans-serif;
+      padding: 20px 80px; /* Increase padding on left and right to make the layout thinner */
     }
 
-    #map1, #plot1 {
+    /* Header Box Styles */
+    .header-box {
+      background-color: #f5f3f3;
+      border: 2px solid black;
+      padding: 15px; /* Reduce padding inside the box */
+      text-align: center;
       margin-bottom: 20px;
+      border-radius: 5px;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      max-width: 900px; /* Set maximum width */
+      margin: 0 auto; /* Center the header box */
     }
 
-    .placeholder-text {
-      margin-top: 10px;
+    .header-box h1 {
+      font-size: 32px; /* Reduce font size */
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .header-box p {
+      font-size: 16px; /* Reduce paragraph font size */
       color: #333;
       line-height: 1.6;
+    }
+
+    /* Plot and Map Centering */
+    #plot1, #map1, #plot2 {
+      margin-bottom: 20px;
+      max-width: 900px; /* Set a max width */
+      margin: 0 auto; /* Center plots and map */
+    }
+
+    /* Placeholder text styles */
+    .placeholder-text {
+      margin-top: 10px;
+      margin-bottom: 20px;
+      color: #333;
+      line-height: 1.6;
+      max-width: 900px; /* Center text and paragraphs */
+      margin: 0 auto;
+    }
+
+    /* Flex container for sankey and description */
+    .sankey-paragraph-container {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    #plot2 {
+      width: 48%;
+    }
+
+    .sankey-description {
+      width: 48%;
+    }
+
+    /* Meta data styling */
+    .meta-data {
+      font-size: 8px;
+      text-align: center;
+      margin-top: 20px;
+      color: #666;
+      max-width: 900px; /* Center meta data */
+      margin: 0 auto;
     }
   </style>
 </head>
 <body>
 
-  <h1>FIT3179 - Visualisation 2</h1>
+  <!-- Header Box -->
+  <div class="header-box">
+    <h1>AUSTRALIA BUSHFIRE - Black Summer</h1>
+    <p>In the Summer of 2019 - 2020, a serious bushfire occurred</p>
+    <p>and caused severe damage in Australia. This visualisation</p>
+    <p>aims to provide a deeper insight into the catastrophe.</p>
+  </div>
+
+  <!-- Plot 1 (Lollipop) -->
+  <div id="plot1"></div>
+
+  <!-- Paragraph about Plot 1 -->
+  <div class="placeholder-text">
+    <p>This plot highlights the variation in forest types across jurisdictions. It helps us to see the distribution of different forest types and understand the spread more effectively. This visualization informs us about the impact of different forest categories on the environment and policy decisions.</p>
+  </div>
 
   <!-- Map Visualization -->
   <div id="map1"></div>
+
+  <!-- Paragraph about Map -->
   <div class="placeholder-text">
-    <p>This map showcases the distribution of forest areas across different jurisdictions in Australia.</p>
-    <p>The forest categories include native forest, commercial plantations, and other types of forests.</p>
-    <p>Each category is represented with corresponding data for easier comparison and understanding.</p>
-    <p>Each category is represented with corresponding data for easier comparison and understanding.</p>
+    <p>This map showcases the distribution of forest areas across different jurisdictions in Australia. The forest categories include native forest, commercial plantations, and other types of forests. Each category is represented with corresponding data for easier comparison and understanding.</p>
   </div>
 
-  <!-- Plot Visualization -->
-  <div id="plot1"></div>
-  <div class="placeholder-text">
-    <p>This plot highlights the variation in forest types across jurisdictions.</p>
-    <p>It helps in understanding the spread of different forest types more effectively.</p>
-    <p>Each category is represented with corresponding data for easier comparison and understanding.</p>
+  <!-- Two-column layout: Paragraph on the left, Sankey on the right -->
+  <div class="sankey-paragraph-container">
+    <div class="sankey-description">
+      <p>This Sankey diagram shows the flow of forest resources and their distribution between different regions. The visualisation gives a clear picture of how forests are divided among jurisdictions and provides insights into the sustainability of forest management across Australia.</p>
+    </div>
+    <div id="plot2"></div>
+  </div>
+
+  <!-- Meta data -->
+  <div class="meta-data">
+    <p>Data Source: Australian Forestry Department & NASA | Visualisation by Do Thanh Binh Nguyen - Monash University | Last Updated: October 2024</p>
   </div>
 
   <script>
-    vegaEmbed('#map1', "map.vg.json").then(function(result) {
-      // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+    // Embed Plot 1 (Lollipop)
+    vegaEmbed('#plot1', "js/lollipop.vg.json").then(function(result) {
+      console.log("Plot 1 successfully loaded");
+    }).catch(function(error) {
+      console.error("Error loading Plot 1:", error);
+    });
+
+    // Embed Map
+    vegaEmbed('#map1', "js/map.vg.json").then(function(result) {
+      console.log("Map successfully loaded");
     }).catch(console.error);
 
-    vegaEmbed('#plot1', "plot1.json").then(function(result) {
-      // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+    // Embed Plot 2 (Sankey)
+    vegaEmbed('#plot2', "js/sankey.vg.json").then(function(result) {
+      console.log("Sankey successfully loaded");
     }).catch(console.error);
   </script>
 
