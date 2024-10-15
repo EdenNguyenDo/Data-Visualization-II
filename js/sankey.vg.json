@@ -189,7 +189,7 @@
               "signal": "!groupSelector && (groupHover.states == datum.states || groupHover.forest_tenure == datum.forest_tenure) ? 1 : 0"
             },
             "tooltip": {
-              "signal": "datum.states + ' → ' + datum.forest_tenure + '    ' + format(datum.size, ',.0f') + '   (' + format(datum.percentage, '.1%') + ')'"
+              "signal": "'States: ' + datum.states + '  &  ' + 'Forest tenure: ' + datum.forest_tenure + '  &  ' + 'Burnt: ' + format(datum.size, ',.0f') + ' hectares'"
             }
           },
           "hover": {"strokeOpacity": {"value": 1}}
@@ -298,7 +298,7 @@
         "encode": {
           "enter": {
             "stroke": {"value": "#000"},
-            "strokeWidth": {"value": 2},
+            "strokeWidth": {"value": 1},
             "width": {"scale": "x", "band": 1},
             "x": {"scale": "x", "field": "stack"},
             "y": {"field": "y0", "scale": "y"},
@@ -336,5 +336,6 @@
           }
         ]
       }
-    ]
+    ],
+    "config": {"background": "lightgoldenrodyellow"}
 }
