@@ -10,30 +10,37 @@
     body {
       background-color: lightgoldenrodyellow;
       font-family: Arial, sans-serif;
-      padding: 20px 80px; /* Increase padding on left and right to make the layout thinner */
+      padding: 20px 40px; /* Padding on both sides */
+      margin: 0; /* Reset margin */
+      box-sizing: border-box; /* Ensure padding doesn't add to width */
+    }
+
+    /* Wrapper to control the central alignment and max width */
+    .wrapper {
+      max-width: 1200px; /* Set the desired maximum width */
+      margin: 0 auto; /* Center the content horizontally */
+      padding: 0 20px; /* Additional padding inside the wrapper */
     }
 
     /* Header Box Styles */
     .header-box {
       background-color: #f5f3f3;
       border: 2px solid black;
-      padding: 15px; /* Reduce padding inside the box */
+      padding: 15px;
       text-align: center;
       margin-bottom: 20px;
       border-radius: 5px;
       box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-      max-width: 900px; /* Set maximum width */
-      margin: 0 auto; /* Center the header box */
     }
 
     .header-box h1 {
-      font-size: 32px; /* Reduce font size */
+      font-size: 32px;
       font-weight: bold;
       margin-bottom: 10px;
     }
 
     .header-box p {
-      font-size: 16px; /* Reduce paragraph font size */
+      font-size: 16px;
       color: #333;
       line-height: 1.6;
     }
@@ -41,8 +48,7 @@
     /* Plot and Map Centering */
     #plot1, #map1, #plot2 {
       margin-bottom: 20px;
-      max-width: 900px; /* Set a max width */
-      margin: 0 auto; /* Center plots and map */
+      width: 100%;
     }
 
     /* Placeholder text styles */
@@ -51,8 +57,6 @@
       margin-bottom: 20px;
       color: #333;
       line-height: 1.6;
-      max-width: 900px; /* Center text and paragraphs */
-      margin: 0 auto;
     }
 
     /* Flex container for sankey and description */
@@ -60,8 +64,6 @@
       display: flex;
       justify-content: space-between;
       margin-bottom: 20px;
-      max-width: 900px;
-      margin: 0 auto;
     }
 
     #plot2 {
@@ -78,49 +80,52 @@
       text-align: center;
       margin-top: 20px;
       color: #666;
-      max-width: 900px; /* Center meta data */
-      margin: 0 auto;
     }
   </style>
 </head>
 <body>
 
-  <!-- Header Box -->
-  <div class="header-box">
-    <h1>AUSTRALIA BUSHFIRE - Black Summer</h1>
-    <p>In the Summer of 2019 - 2020, a serious bushfire occurred</p>
-    <p>and caused severe damage in Australia. This visualisation</p>
-    <p>aims to provide a deeper insight into the catastrophe.</p>
-  </div>
+  <!-- Wrapper to contain everything with padding and centering -->
+  <div class="wrapper">
 
-  <!-- Plot 1 (Lollipop) -->
-  <div id="plot1"></div>
-
-  <!-- Paragraph about Plot 1 -->
-  <div class="placeholder-text">
-    <p>This plot highlights the variation in forest types across jurisdictions. It helps us to see the distribution of different forest types and understand the spread more effectively. This visualization informs us about the impact of different forest categories on the environment and policy decisions.</p>
-  </div>
-
-  <!-- Map Visualization -->
-  <div id="map1"></div>
-
-  <!-- Paragraph about Map -->
-  <div class="placeholder-text">
-    <p>This map showcases the distribution of forest areas across different jurisdictions in Australia. The forest categories include native forest, commercial plantations, and other types of forests. Each category is represented with corresponding data for easier comparison and understanding.</p>
-  </div>
-
-  <!-- Two-column layout: Paragraph on the left, Sankey on the right -->
-  <div class="sankey-paragraph-container">
-    <div class="sankey-description">
-      <p>This Sankey diagram shows the flow of forest resources and their distribution between different regions. The visualisation gives a clear picture of how forests are divided among jurisdictions and provides insights into the sustainability of forest management across Australia.</p>
+    <!-- Header Box -->
+    <div class="header-box">
+      <h1>AUSTRALIA BUSHFIRE - Black Summer</h1>
+      <p>In the Summer of 2019 - 2020, a serious bushfire occurred</p>
+      <p>and caused severe damage in Australia. This visualisation</p>
+      <p>aims to provide a deeper insight into the catastrophe.</p>
     </div>
-    <div id="plot2"></div>
-  </div>
 
-  <!-- Meta data -->
-  <div class="meta-data">
-    <p>Data Source: Australian Forestry Department & NASA | Visualisation by Do Thanh Binh Nguyen - Monash University | Last Updated: October 2024</p>
-  </div>
+    <!-- Plot 1 (Lollipop) -->
+    <div id="plot1"></div>
+
+    <!-- Paragraph about Plot 1 -->
+    <div class="placeholder-text">
+      <p>This plot highlights the variation in forest types across jurisdictions. It helps us to see the distribution of different forest types and understand the spread more effectively. This visualization informs us about the impact of different forest categories on the environment and policy decisions.</p>
+    </div>
+
+    <!-- Map Visualization -->
+    <div id="map1"></div>
+
+    <!-- Paragraph about Map -->
+    <div class="placeholder-text">
+      <p>This map showcases the distribution of forest areas across different jurisdictions in Australia. The forest categories include native forest, commercial plantations, and other types of forests. Each category is represented with corresponding data for easier comparison and understanding.</p>
+    </div>
+
+    <!-- Two-column layout: Paragraph on the left, Sankey on the right -->
+    <div class="sankey-paragraph-container">
+      <div class="sankey-description">
+        <p>This Sankey diagram shows the flow of forest resources and their distribution between different regions. The visualisation gives a clear picture of how forests are divided among jurisdictions and provides insights into the sustainability of forest management across Australia.</p>
+      </div>
+      <div id="plot2"></div>
+    </div>
+
+    <!-- Meta data -->
+    <div class="meta-data">
+      <p>Data Source: Australian Forestry Department & NASA | Visualisation by Do Thanh Binh Nguyen - Monash University | Last Updated: October 2024</p>
+    </div>
+
+  </div> <!-- End of wrapper -->
 
   <script>
     // Embed Plot 1 (Lollipop)
