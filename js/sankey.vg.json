@@ -1,5 +1,10 @@
 {
     "$schema": "https://vega.github.io/schema/vega/v5.2.json",
+    "title": {
+        "text": "Forest tenure burnt area for states",
+        "anchor": "middle",  
+        "fontSize": 10 
+    },
     "height": 300,
     "width": 600,
     "data": [
